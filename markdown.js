@@ -3,31 +3,63 @@ function Text(ascii) {
 };
 
 Text.prototype.convertToMarkdown = function(ascii) {
-  var output = ascii.replace(/\*/, handleItalics() );
-  return output;
+  var strongOutput = handleStrong(ascii);
+  var italicOutput = handleItalics(strongOutput);
+  return italicOutput;
 };
 
 Text.prototype.Markdown = function() {
   return this.convertToMarkdown(this.ascii);
 };
 
-//Updates the View
 var displayText = function(ascii) {
   $("#awesome").html(ascii);
 }
 
-var italics_mode = false
+String.prototype.replaceAt=function(index, char) {
+    var a = this.split("");
+    a[index] = char;
+    return a.join("");
+};
 
-var handleItalics = function() {
-  if (italics_mode) {
-    italics_mode = false;
-    return "</em>";
+
+String.prototype.replaceDoubleIndexAt=function(index, char) {
+    var a = this.split("");
+    a[index] = char;
+    a[index+1] = "";
+    return a.join("");
+};
+
+var handleStrong = function(ascii) {
+  var strongMode = 1;
+  var lookup = ascii.search(/\*\*/);
+  for (i = lookup; i > -1; i = ascii.search(/\*\*/)) {
+  if (strongMode % 2 === 0) {
+    var tag = "</strong>";
   }
   else
   {
-    italics_mode = true;
-    return "<em>";
+    var tag = "<strong>";
   }
+  strongMode++;
+  var ascii = ascii.replaceDoubleIndexAt(i, tag) };
+  return ascii;
+};
+
+var handleItalics = function(ascii) {
+  var italics_mode = 1;
+  var lookup = ascii.search(/\*|\_/);
+  for (i = lookup; i > -1; i = ascii.search(/\*/)) {
+  if (italics_mode % 2 === 0) {
+    var tag = "</em>";
+  }
+  else
+  {
+    var tag = "<em>";
+  }
+  italics_mode++;
+  var ascii = ascii.replaceAt(i, tag) };
+  return ascii;
 };
 
 $(document).ready(function() {
