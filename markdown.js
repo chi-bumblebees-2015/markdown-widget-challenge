@@ -23,7 +23,28 @@ $(document).ready(function() {
   // }
 
   MarkdownWidget.prototype.markdownParcer = function(input) {
-    widget.convertDoubles(this.$input.val());
+    var index = 0;
+    // this.$output.text("");
+    input = input.replace(/\*{2}/g, function(){
+      index++;
+      return (index % 2 === 1 ) ? "<strong>" : "</strong>" ;
+    });
+    var index = 0;
+    input = input.replace(/\*{1}/g, function(){
+      index++;
+      return (index % 2 === 1 ) ? "<em>" : "</em>" ;
+    });
+    var index = 0;
+    input = input.replace(/\_{1}/g, function(){
+      index++;
+      return (index % 2 === 1 ) ? "<em>" : "</em>" ;
+    });
+    var index = 0;
+    input = input.replace(/\n{1}/g, "<br>");
+    $(this.$output).append(input);
+
+    // widget.convertDoubles(this.$input.val());
+    // widget.convertSingles(this.$input.val());
     // var strings = input.trim().replace(/\n/g, "<br>")
     //for loop that goes through the whole textarea and strings[i] check string for mark down
     //then if marked down  markdown hash(string[0])
@@ -35,14 +56,12 @@ $(document).ready(function() {
 
     }
 
-  MarkdownWidget.prototype.convertDoubles = function(input) {
-    var index = 0;
-    input = input.replace(/[*{2}]+/g, function(){
-      index++;
-      return (index % 2 === 1 ) ? "<strong>" : "</strong>" ;
-
-    });
+  MarkdownWidget.prototype.convert = function(input) {
     $(this.$output).append(input);
+    console.log($(this.$output));
+
+  };
+   MarkdownWidget.prototype.convertSingles = function(input) {
     console.log($(this.$output));
 
   };
