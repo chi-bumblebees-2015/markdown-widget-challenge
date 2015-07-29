@@ -2,8 +2,9 @@ function Text(ascii) {
   this.ascii = ascii;
 };
 
-Text.prototype.convertToMarkdown = function() {
-  return this.ascii;
+Text.prototype.convertToMarkdown = function(ascii) {
+  var output = ascii.replace(/\*/, handleItalics() );
+  return output;
 };
 
 Text.prototype.Markdown = function() {
@@ -14,6 +15,20 @@ Text.prototype.Markdown = function() {
 var displayText = function(ascii) {
   $("#awesome").html(ascii);
 }
+
+var italics_mode = false
+
+var handleItalics = function() {
+  if (italics_mode) {
+    italics_mode = false;
+    return "</em>";
+  }
+  else
+  {
+    italics_mode = true;
+    return "<em>";
+  }
+};
 
 $(document).ready(function() {
   //Controller
