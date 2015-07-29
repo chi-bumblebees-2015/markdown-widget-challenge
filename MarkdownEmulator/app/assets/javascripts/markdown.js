@@ -1,13 +1,31 @@
 $(document).ready(function(){
 
-  $("#md-button").on("click", function(e){
-    e.preventDefault();
-    $("#output-space").html("");
-    var input = $("#formatted-input").val();
-    var boldInput = input.match(/(\*\*|\_\_)(.+)(\*\*|\_\_)/g);
-  });
 });
 
+function MarkdownWidget(input, output){
+  this.input = input;
+  this.output = output;
+}
+
+MarkdownWidget.prototype.createWidget = function(input,output)
+{
+  var widget = new MarkdownWidget(input, output);
+  return widget;
+}
+
+
+MarkdownWidget.prototype.toConvert = function()
+{
+  var input = this.input.val();
+  if input.test(/(\*\*)(.+?)\*\*|(__)(.+?)(__)/g)
+  {
+
+  }
+  else if input.test
+  {
+
+  }
+}
 
 // $(document).ready(function(){
 
