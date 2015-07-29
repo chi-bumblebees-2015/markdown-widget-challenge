@@ -13,6 +13,7 @@ Text.prototype.Markdown = function() {
 };
 
 var displayText = function(ascii) {
+  console.log(ascii);
   $("#awesome").html(ascii);
 }
 
