@@ -1,21 +1,53 @@
+var parser = new Parser();
+var typingTimer = '';
+var pauseTypingInterval = 3000;
+
 $(document).ready(function(){
-    var parser = new Parser();
-    $("markdown").on("submit", function(event){
-        //update parser's input
-        //provide stuff to view
-    });
+    textArea = $("#markdown");
+
+    textArea.on("keyup", startTimer);
+    textArea.on("keydown", stopTimer);
 });
+
+function startTimer(){
+    console.log("startTimer");
+    stopTimer();
+    typingTimer = setTimeout(updateHTML, pauseTypingInterval);
+}
+
+function stopTimer(){
+    if (typingTimer){clearTimeout();}
+}
+
+function updateHTML(){
+    console.log("updateHTML");
+    var html = parser.convertToHTML(textArea.content);
+    console.log(html);
+    display(html);
+}
 
 
 function Parser(){
     this.markdown = "";
-    this.html = "";
 }
 
-Parser.prototype.updateMarkdown = function(string){
+Parser.prototype.convertToHTML = function(string){
     this.markdown = string;
+    return this.parse();
 }
 
 Parser.prototype.parse = function(){
+    // var htmlString = stylize(this.markdown);
+    console.log("parse");
+    return "<h1>It works!!</h1>";
+}
 
+Parser.prototype.stylize = function(markdownString){
+
+}
+
+function display(htmlString){
+    var displayDiv = $("#display");
+    displayDiv.html("");
+    displayDiv.append(htmlString);
 }
