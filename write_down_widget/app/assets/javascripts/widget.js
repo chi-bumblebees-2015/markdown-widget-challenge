@@ -45,9 +45,9 @@ var statement_controller = function(element, model){
 
 // view
 $(document).ready(function(){
- wallie = new Statement("","")
+ var statement = new Statement("","")
   $("#widget").on('keyup', function(){
-    statement_controller($(this), wallie);
+    statement_controller($(this), statement);
   }); // closes keyup
 }); // closes ready
 
