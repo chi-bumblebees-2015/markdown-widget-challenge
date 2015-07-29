@@ -1,22 +1,60 @@
 $(document).ready(function() {
+  //Controller***********
   widget = new MarkdownWidget($("#source"), $("#preview"));
-
   function MarkdownWidget(input, output) {
     this.$input = input;
     this.$output = output;
   }
 
+//MODEL**************
+  function MarkdownModel(){
+    this.markdownHash = {
+      '_': function(string) {
+        return "<i>" + string.replace(/_/g, "") + "</i>"
+      },
+
+    };
+  }
+  // MarkdownWidget.prototype.checkStringForMarkdown = function(string){
+  //   var regex = /[(*_)]+/g;
+  //   var markdown = string.match(regex);
+  //   return markdown
+
+  // }
+
   MarkdownWidget.prototype.markdownParcer = function(input) {
-    widget.convertUnderscores(input);
-    // If *.....*, replace first * with <em> and second * with </em>
-    // If _....._, replace first _ with <em> and second _ with </em>
-    console.log(input.match(/_/g).length);
+    widget.convertDoubles(this.$input.val());
+    // var strings = input.trim().replace(/\n/g, "<br>")
+    //for loop that goes through the whole textarea and strings[i] check string for mark down
+    //then if marked down  markdown hash(string[0])
+    // take converted hash(string)
     // If **....**, replace first ** with <strong> and second ** with </strong>
+    // If *.....*, replace first * with <em> and second * with </em>
+
+    // If _....._, replace first _ with <em> and second _ with </em>
+
+    }
+
+  MarkdownWidget.prototype.convertDoubles = function(input) {
+    var index = 0;
+    input = input.replace(/[*{2}]+/g, function(){
+      index++;
+      return (index % 2 === 1 ) ? "<strong>" : "</strong>" ;
+
+    });
+    $(this.$output).append(input);
+    console.log($(this.$output));
+
+  };
+
+
+
+    // console.log(input.match(/_/g).length);
+    // widget.convertUnderscores(input);
     // If \n, replace \n with <br>
 
     // Display content of textarea
-    $(this.$output).append(input);
-  }
+
 
   MarkdownWidget.prototype.updateInput = function() {
     this.$output.text("");
@@ -25,10 +63,10 @@ $(document).ready(function() {
 
   MarkdownWidget.prototype.convertUnderscores = function(string) {
     var underscores = string.match(/_/g);
-    var count = underscores.length;
-    if (count % 2 === 1) {
-      // pop last _ off of regex array
-    }
+    // var count = underscores.length;
+    // if (count % 2 === 1) {
+    //   // pop last _ off of regex array
+    // }
     // convert
     // each if index of regex array is even, replace with <em>
     // each if index of regex array is odd, replace with </em>
