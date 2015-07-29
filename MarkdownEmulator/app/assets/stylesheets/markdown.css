@@ -1,0 +1,21 @@
+#formatted-input
+{
+  height: 15px;
+  width: 150px;
+  padding: 5px;
+}
+
+#markdown-output
+{
+  margin-top: 20px;
+}
+
+.bold
+{
+  font-weight: bold;
+}
+
+.italics
+{
+  font-style: italic;
+}
