@@ -10,19 +10,17 @@ $(document).ready(function(){
 });
 
 function startTimer(){
-    console.log("startTimer");
     stopTimer();
     typingTimer = setTimeout(updateHTML, pauseTypingInterval);
 }
 
 function stopTimer(){
-    if (typingTimer){clearTimeout();}
+    clearTimeout(typingTimer);
 }
 
 function updateHTML(){
-    console.log("updateHTML");
-    var html = parser.convertToHTML(textArea.content);
-    console.log(html);
+    var markdownString = $("#markdown").val();
+    var html = parser.convertToHTML(markdownString);
     display(html);
 }
 
@@ -37,13 +35,46 @@ Parser.prototype.convertToHTML = function(string){
 }
 
 Parser.prototype.parse = function(){
-    // var htmlString = stylize(this.markdown);
-    console.log("parse");
-    return "<h1>It works!!</h1>";
+    var paragraphs = this.separateParagraphs(this.markdown);
+    paragraphs = paragraphs.map(this.stylize, this);
+
+
+    return "<p>" + paragraphs.join(" ") + "</p>";
 }
 
-Parser.prototype.stylize = function(markdownString){
+Parser.prototype.separateParagraphs = function(markdownString){
+    return markdownString.split("\n").filter(function(element){ return element != ""; });
+}
 
+Parser.prototype.stylize = function(string){
+    string = this.embolden(string);
+    string = this.italicize(string);
+    return string;
+}
+
+Parser.prototype.embolden = function(string){
+    var openingTag = true;
+    for(i=0; i<string.length; i++){
+        if (string.slice(i, i+2) == "**" || string.slice(i, i+2) == "__"){
+            var insert = openingTag ? "<strong>" : "</strong>";
+            openingTag = !openingTag;
+            string = [string.slice(0, i) + insert + string.slice(i+2)].join("");
+        }
+    }
+    return string;
+}
+
+Parser.prototype.italicize = function(string){
+    var openingTag = true;
+    for(i=0; i<string.length; i++){
+        console.log(string.charAt(i));
+        if (string.charAt(i) == "*" || string.charAt(i) == "_"){
+            var insert = openingTag ? "<em>" : "</em>";
+            openingTag = !openingTag;
+            string = [string.slice(0, i) + insert + string.slice(i+1)].join("");
+        }
+    }
+    return string;
 }
 
 function display(htmlString){
